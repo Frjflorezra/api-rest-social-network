@@ -1,0 +1,2 @@
+start cmd.exe /k "cd /d C:\Program Files\MongoDB\Server\7.0\bin && mongod.exe --dbpath C:\Users\fra_n\OneDrive\Documents\Talentotech\bdata-mongodb"
+start cmd.exe /k "cd /d C:\Users\fra_n\OneDrive\Documents\Talentotech\api-rest-social-network && npm run start:watch"
