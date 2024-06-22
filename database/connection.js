@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+import {connect} from 'mongoose'
 
 const connection = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/bd_socialnet");
+    await connect("mongodb://localhost:27017/bd_socialnet");
     console.log("conectado correctamente a la base de datos");
   } catch (error) {
     console.log(error);
@@ -10,4 +10,4 @@ const connection = async () => {
   }
 };
 
-module.exports = connection;
+export default connection;

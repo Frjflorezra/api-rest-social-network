@@ -1,7 +1,10 @@
 // importaciones
-const connection = require("./database/connection");
-const express = require("express");
-const cors = require("cors");
+import connection from "./database/connection.js";
+import express, { json, urlencoded } from "express";
+import cors from "cors";
+import UserRoutes from "./routes/user.js";
+import FollowRoutes from "./routes/follow.js";
+import PublicationRoutes from "./routes/publication.js";
 
 //mensaje de bienvenida
 
@@ -22,10 +25,14 @@ app.use(cors());
 
 // Conversion de datos (body a objetos js)
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(json());
+app.use(urlencoded({ extended: true }));
 
 //configurar rutas
+
+app.use("/api/user", UserRoutes);
+app.use("/api/follow", FollowRoutes);
+app.use("/api/publication", PublicationRoutes);
 
 app.get("/test-route", (req, res) => {
   return res.status(200).json({
