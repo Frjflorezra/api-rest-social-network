@@ -1,49 +1,51 @@
-// importaciones
+// Importaciones
 import connection from "./database/connection.js";
 import express, { json, urlencoded } from "express";
 import cors from "cors";
-import UserRoutes from "./routes/user.js";
-import FollowRoutes from "./routes/follow.js";
-import PublicationRoutes from "./routes/publication.js";
+import UserRoutes from './routes/user.js'
+import PublicationRoutes from './routes/publications.js'
+import FollowRoutes from './routes/follow.js'
+import bodyParser from 'body-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-//mensaje de bienvenida
 
-console.log("API node arriba");
+// Mensaje de bienvenida
+console.log("API NODE arriba");
 
-//Conexiónes a la BD
-
+// Conexión a la BD
 connection();
 
-// crear servidor de node
 
+// Crear servidor de Node
 const app = express();
-const puerto = 3900;
+const puerto = process.env.PORT || 3900;
 
-//configurar cors: permite que las peticiones se hagan correctamente
-
+// Configurar cors: permite que las peticiones se hagan correctamente
 app.use(cors());
 
-// Conversion de datos (body a objetos js)
+// Conversión de datos (body a objetos JS)
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(json());
-app.use(urlencoded({ extended: true }));
+// Configurar rutas
+app.use('/api/user', UserRoutes);
+app.use('/api/publication', PublicationRoutes);
+app.use('/api/follow', FollowRoutes);
 
-//configurar rutas
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-app.use("/api/user", UserRoutes);
-app.use("/api/follow", FollowRoutes);
-app.use("/api/publication", PublicationRoutes);
 
-app.get("/test-route", (req, res) => {
-  return res.status(200).json({
-    id: 1,
-    name: "francisco florez",
-    username: "frjflorez",
-  });
-});
+// Configuración para servir archivos estáticos (imágenes de avatar)
+app.use('/uploads/avatars', express.static(path.join(__dirname, 'uploads', 'avatars')));
 
-// configurar el servidor para escuchar las peticiones HTTP
+// Configuración para servir archivos estáticos (imágenes de publicaciones)
+app.use('/uploads/publications', express.static(path.join(__dirname, 'uploads', 'publications')));
 
+
+// Configurar el servidor para escuchar las peticiones HTTP
 app.listen(puerto, () => {
-  console.log("servidor de node corriendo en el puerto", puerto);
+  console.log("Servidor de NODE corriendo en el puerto", puerto)
 });
